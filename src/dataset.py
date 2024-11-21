@@ -1,5 +1,6 @@
 import random
 import re
+import numpy as np
 
 
 #This function will take a text file and return another file where each line contains a single sentence.
@@ -86,4 +87,4 @@ def createDataset(sentences, trainingPercent, watermarkPercent):
         else:
             testWatermarkBooleans.append(False)
 
-    return trainingDataset, validationDataset, testDataset, trainingWatermarkBooleans, validationWatermarkBooleans, testWatermarkBooleans
+    return trainingDataset, validationDataset, testDataset, np.array(trainingWatermarkBooleans), np.array(validationWatermarkBooleans), np.array(testWatermarkBooleans)

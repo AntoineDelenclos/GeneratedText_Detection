@@ -8,7 +8,7 @@ def tokenizeByCharacter(dataset, embeddingDim, padding):
     charTokenizer.fit_on_texts(dataset)
 
     charSequences = charTokenizer.texts_to_sequences(dataset)
-    maxLength = max(len(sequence) for sequence in charSequences)
+    maxLength = max(len(sequence) for sequence in charSequences) #Maybe try to do the max of all the sequences (training, validation and test sequences)
 
     paddedCharSequences = pad_sequences(charSequences, maxlen=maxLength, padding=padding) #Need to normalize the sequences as they are not all the same length
 
@@ -16,3 +16,4 @@ def tokenizeByCharacter(dataset, embeddingDim, padding):
     embeddingMatrix = np.random.rand(vocabSize, embeddingDim)
 
     return paddedCharSequences, embeddingMatrix
+
