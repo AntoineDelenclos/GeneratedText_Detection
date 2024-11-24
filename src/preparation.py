@@ -1,6 +1,8 @@
 import numpy as np
 from keras._tf_keras.keras.preprocessing.text import Tokenizer
 from keras._tf_keras.keras.preprocessing.sequence import pad_sequences
+import spacy
+
 
 
 def tokenizeByCharacter(dataset, embeddingDim, padding):
@@ -17,3 +19,25 @@ def tokenizeByCharacter(dataset, embeddingDim, padding):
 
     return paddedCharSequences, embeddingMatrix
 
+def tokenizeByWordAndEmbedding(dataset): #Do tokenization and embedding in the same time is quicker
+    embeddedTokens = []
+    nlp = spacy.load("en_core_web_sm")
+    for sentence in dataset:
+        doc = nlp(sentence)
+        embeddedTokens.append(np.mean([X.vector for X in doc], axis=0)) #Tokenized and embedded
+    return embeddedTokens
+
+def tokenizeByWord(dataset):
+    tokenizedDataset = []
+    nlp = spacy.load("en_core_web_sm")
+    for sentence in dataset:
+        doc = nlp(sentence)
+        tokenizedDataset.append([X.text for X in doc])
+    return tokenizedDataset
+
+def embeddingToken(tokenizedDataset, embeddingDim):
+    nlp = spacy.load("en_core_web_sm")
+    embeddedTokens = []
+    for tokenizedSentence in tokenizedDataset:
+        doc = nlp(tokenizedSentence)
+        embeddedTokens.append([X.vector for X in doc])

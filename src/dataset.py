@@ -35,7 +35,7 @@ def sentenceIsWatermarked(sentence):
 #This function will create a dataset that will contain : training, validation and test data
 def createDataset(sentences, trainingPercent, watermarkPercent):
     trainingDataset, validationDataset, testDataset = [], [], []
-    trainingWatermarkBooleans, validationWatermarkBooleans, testWatermarkBooleans = [], [], []
+    trainingWatermarkedBooleans, validationWatermarkedBooleans, testWatermarkedBooleans = [], [], []
     validationPercent = (1 - trainingPercent)/2
     testPercent = (1 - trainingPercent)/2
 
@@ -49,21 +49,18 @@ def createDataset(sentences, trainingPercent, watermarkPercent):
     count = 0
     for sentence in sentences:
         if count < countTraining:
-            print("TRAIN")
             trainingDataset.append(sentence)
             if random.randint(0, 1) <= watermarkPercent:
                 newSentence = watermarkSentence(sentence)
                 trainingDataset.append(newSentence)
 
         elif count < countValidation:
-            print("VAL")
             validationDataset.append(sentence)
             if random.randint(0, 1) <= watermarkPercent:
                 newSentence = watermarkSentence(sentence)
                 validationDataset.append(newSentence)
 
         elif count < countTest:
-            print("TEST")
             testDataset.append(sentence)
             if random.randint(0,1) <= watermarkPercent:
                 newSentence = watermarkSentence(sentence)
@@ -73,18 +70,18 @@ def createDataset(sentences, trainingPercent, watermarkPercent):
 
     for i in range(len(trainingDataset)):
         if sentenceIsWatermarked(trainingDataset[i]):
-            trainingWatermarkBooleans.append(True)
+            trainingWatermarkedBooleans.append(1)
         else:
-            trainingWatermarkBooleans.append(False)
+            trainingWatermarkedBooleans.append(0)
     for i in range(len(validationDataset)):
         if sentenceIsWatermarked(validationDataset[i]):
-            validationWatermarkBooleans.append(True)
+            validationWatermarkedBooleans.append(1)
         else:
-            validationWatermarkBooleans.append(False)
+            validationWatermarkedBooleans.append(0)
     for i in range(len(testDataset)):
         if sentenceIsWatermarked(testDataset[i]):
-            testWatermarkBooleans.append(True)
+            testWatermarkedBooleans.append(1)
         else:
-            testWatermarkBooleans.append(False)
+            testWatermarkedBooleans.append(0)
 
-    return trainingDataset, validationDataset, testDataset, np.array(trainingWatermarkBooleans), np.array(validationWatermarkBooleans), np.array(testWatermarkBooleans)
+    return trainingDataset, validationDataset, testDataset, trainingWatermarkedBooleans, validationWatermarkedBooleans, testWatermarkedBooleans
